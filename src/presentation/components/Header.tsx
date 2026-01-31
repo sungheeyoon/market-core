@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                                     className="bg-transparent border-none outline-none text-sm font-bold w-32 sm:w-64"
                                     autoFocus
                                 />
-                                <button type="button" onClick={() => setIsSearchOpen(false)} className="ml-2">
+                                <button type="button" onClick={() => setIsSearchOpen(false)} className="ml-2" aria-label="Close search">
                                     <X size={16} className="text-neutral-400 hover:text-black" />
                                 </button>
                             </form>
@@ -76,6 +76,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                             <button
                                 onClick={() => setIsSearchOpen(true)}
                                 className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
+                                aria-label="Open search"
                             >
                                 <Search size={22} />
                             </button>
@@ -84,6 +85,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                         <button
                             onClick={() => setIsCartOpen(true)}
                             className="p-2 hover:bg-neutral-100 rounded-full transition-colors relative"
+                            aria-label="Open cart"
                         >
                             <ShoppingBag size={22} />
                             {totalItems > 0 && (
@@ -92,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                                 </span>
                             )}
                         </button>
-                        <button className="md:hidden p-2 hover:bg-neutral-100 rounded-full transition-colors">
+                        <button className="md:hidden p-2 hover:bg-neutral-100 rounded-full transition-colors" aria-label="Open menu">
                             <Menu size={22} />
                         </button>
                     </div>

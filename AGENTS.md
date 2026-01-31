@@ -23,35 +23,35 @@ Generate structured, phase-based plans where:
 
 ### Step 2: Phase Breakdown with TDD Integration
 Break feature into 3-7 phases where each phase:
+- **Visualization**: Use Mermaid.js diagrams to explain complex logic or flows.
+- **Context Map**: Explicitly list files that need to be read or modified.
 - **Test-First**: Write tests BEFORE implementation
 - Delivers working, testable functionality
-- Takes 1-4 hours maximum
 - Follows Red-Green-Refactor cycle
-- Has measurable test coverage requirements
-- Can be rolled back independently
-- Has clear success criteria
+- Has clear success criteria and **Executable Verification Commands**.
 
 **Phase Structure**:
 - Phase Name: Clear deliverable
 - Goal: What working functionality this produces
+- **Context Map**: Relevant file paths for this phase
 - **Test Strategy**: What test types, coverage target, test scenarios
 - Tasks (ordered by TDD workflow):
   1. **RED Tasks**: Write failing tests first
   2. **GREEN Tasks**: Implement minimal code to make tests pass
   3. **REFACTOR Tasks**: Improve code quality while tests stay green
-- Quality Gate: TDD compliance + validation criteria
-- Dependencies: What must exist before starting
-- **Coverage Target**: Specific percentage or checklist for this phase
+- Quality Gate: TDD compliance + **Executable Command** + validation criteria
 
 ### Step 3: Plan Document Creation
-Use the template at `./.gemini/rules/plan-template.md` to generate the plan.
+Use the template at `./.gemini/rules/plan-template-v2.md` to generate the plan.
 The output file must be created at: `docs/plans/PLAN_<feature-name>.md`
 
 Include:
 - Overview and objectives
+- **Context Map** (File reference guide)
+- **Mermaid Diagrams** (Class, Sequence, or State diagrams)
 - Architecture decisions with rationale
 - Complete phase breakdown with checkboxes
-- Quality gate checklists
+- **Executable Quality Gates** (Shell commands for verification)
 - Risk assessment table
 - Rollback strategy per phase
 - Progress tracking section
@@ -315,4 +315,5 @@ test 'component should call dependency':
 6. **Test Data**: What fixtures/factories are needed?
 
 ## Supporting Files Reference
-- [plan-template.md](./.gemini/rules/plan-template.md) - Complete plan document template
+- [plan-template-v2.md](./.gemini/rules/plan-template-v2.md) - Complete plan document template (v2)
+- [plan-template-legacy.md](./.gemini/rules/plan-template-legacy.md) - Legacy plan document template (v1)

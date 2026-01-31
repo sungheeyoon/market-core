@@ -28,12 +28,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
                     <button
                         onClick={() => onAddToCart?.(product)}
                         className="p-3 bg-white text-black rounded-full shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
+                        aria-label="Add to cart"
                     >
                         <ShoppingCart size={20} />
                     </button>
                     <button
                         onClick={() => onViewDetails?.(product)}
                         className="p-3 bg-white text-black rounded-full shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
+                        aria-label="View details"
                     >
                         <Eye size={20} />
                     </button>

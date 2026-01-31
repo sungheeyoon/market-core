@@ -40,11 +40,11 @@ function CatalogContent() {
     <div className="min-h-screen bg-[#fafafa] text-neutral-900 selection:bg-neutral-900 selection:text-white">
       <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Header section */}
-        <section className="mb-16">
+        <section className="mb-12 md:mb-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-sm font-black text-emerald-600 uppercase tracking-widest mb-3">Premium Selection</p>
-              <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-none mb-6">
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
                 THE WINTER <br /> COLLECTION.
               </h2>
             </div>

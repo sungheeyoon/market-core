@@ -19,12 +19,13 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { totalItems } = useCart();
-    const { user, logout } = useAuth();
+    const { user, login, logout } = useAuth();
     
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
 
     const handleSearchSubmit = (e: React.FormEvent) => {
@@ -34,6 +35,10 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         } else {
             onSearch?.(searchQuery);
         }
+    };
+
+    const handleLogin = async () => {
+        await login('user@example.com', 'password');
     };
 
     const navLinks = [
@@ -74,14 +79,14 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                                     className="bg-transparent border-none outline-none text-sm font-bold w-32 sm:w-64 text-neutral-900 placeholder:text-neutral-500"
                                     autoFocus
                                 />
-                                <button type="button" onClick={() => setIsSearchOpen(false)} className="ml-2" aria-label="Close search">
+                                <button type="button" onClick={() => setIsSearchOpen(false)} className="ml-2 transition-transform active:scale-90" aria-label="Close search">
                                     <X size={16} className="text-neutral-900 hover:text-black" />
                                 </button>
                             </form>
                         ) : (
                             <button
                                 onClick={() => setIsSearchOpen(true)}
-                                className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
+                                className="p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90"
                                 aria-label="Open search"
                             >
                                 <Search size={22} className="text-neutral-900" />
@@ -91,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                         <div className="relative">
                             <button
                                 onClick={() => user ? setIsUserMenuOpen(!isUserMenuOpen) : setIsLoginOpen(true)}
-                                className="p-2 hover:bg-neutral-100 rounded-full transition-colors flex items-center gap-2"
+                                className="p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90 flex items-center gap-2"
                                 aria-label={user ? "User menu" : "Login"}
                             >
                                 <UserIcon size={22} className="text-neutral-900" />
@@ -118,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                                                     logout();
                                                     setIsUserMenuOpen(false);
                                                 }}
-                                                className="w-full text-left px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 flex items-center gap-2 transition-colors"
+                                                className="w-full text-left px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 flex items-center gap-2 transition-colors active:bg-red-100"
                                             >
                                                 <LogOut size={16} />
                                                 Sign Out
@@ -131,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
                         <button
                             onClick={() => setIsCartOpen(true)}
-                            className="p-2 hover:bg-neutral-100 rounded-full transition-colors relative"
+                            className="p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90 relative"
                             aria-label="Open cart"
                         >
                             <ShoppingBag size={22} className="text-neutral-900" />
@@ -141,12 +146,50 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                                 </span>
                             )}
                         </button>
-                        <button className="md:hidden p-2 hover:bg-neutral-100 rounded-full transition-colors" aria-label="Open menu">
+                        <button 
+                            onClick={() => setIsMobileMenuOpen(true)}
+                            className="md:hidden p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90" 
+                            aria-label="Open menu"
+                        >
                             <Menu size={22} className="text-neutral-900" />
                         </button>
                     </div>
                 </div>
             </nav>
+
+            {/* Mobile Menu */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div 
+                        data-testid="mobile-menu"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="fixed inset-0 z-[200] bg-white md:hidden"
+                    >
+                        <div className="p-6 h-full flex flex-col">
+                            <div className="flex justify-between items-center mb-8">
+                                <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-black tracking-tighter uppercase">Gravity.</Link>
+                                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
+                                    <X size={24} className="text-neutral-900" />
+                                </button>
+                            </div>
+                            <div className="flex flex-col gap-6 text-2xl font-black tracking-tight uppercase">
+                                {navLinks.map((link) => (
+                                    <Link 
+                                        key={link.href} 
+                                        href={link.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={`transition-colors ${pathname === link.href ? 'text-emerald-600' : 'text-neutral-900'}`}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <CartDrawer
                 isOpen={isCartOpen}

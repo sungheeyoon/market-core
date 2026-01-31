@@ -92,7 +92,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full h-14 bg-black text-white rounded-xl font-black text-lg hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2 disabled:bg-neutral-200 disabled:text-neutral-400"
+                                    className="w-full h-14 bg-black text-white rounded-xl font-black text-lg hover:bg-emerald-600 transition-all active:scale-95 flex items-center justify-center gap-2 disabled:bg-neutral-200 disabled:text-neutral-400"
                                 >
                                     {loading ? <Loader2 className="animate-spin" /> : 'Sign In'}
                                 </button>

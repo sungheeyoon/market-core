@@ -45,7 +45,7 @@ export default function CheckoutPage() {
                     Back to shopping
                 </Link>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                     {/* Left: Shipping Form */}
                     <section>
                         <h1 className="text-4xl font-black tracking-tighter mb-8 uppercase text-neutral-900">Checkout</h1>
@@ -83,7 +83,7 @@ export default function CheckoutPage() {
                             <button
                                 type="submit"
                                 disabled={checkoutLoading}
-                                className="w-full py-5 bg-neutral-900 text-white font-black text-lg rounded-2xl hover:bg-emerald-600 disabled:bg-neutral-300 transition-all duration-300 transform active:scale-[0.98] shadow-xl shadow-neutral-200"
+                                className="w-full py-5 bg-neutral-900 text-white font-black text-lg rounded-2xl hover:bg-emerald-600 disabled:bg-neutral-300 transition-all duration-300 transform active:scale-95 shadow-xl shadow-neutral-200"
                             >
                                 {checkoutLoading ? 'Processing...' : 'Complete Order'}
                             </button>

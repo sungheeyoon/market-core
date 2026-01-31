@@ -38,7 +38,7 @@ export const MOCK_PRODUCTS: ProductDataModel[] = [
         name: '세라믹 커피 드리퍼 세트',
         price_krw: 45000,
         desc: '홈카페 아침을 특별하게 만들어주는 수제 세라믹 드리퍼 세트입니다.',
-        img_url: 'https://images.unsplash.com/photo-1521302298285-b778c8582d92?w=800&q=80',
+        img_url: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=800&q=80',
         cat: '라이프스타일',
         stock_count: 20,
         created_at: '2026-01-10T10:00:00Z'

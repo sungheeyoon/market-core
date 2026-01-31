@@ -7,6 +7,7 @@ import { ArrowLeft, ShoppingBag, Star, Share2, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { CartDrawer } from '@/presentation/components/CartDrawer';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -14,6 +15,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const { addItem, totalItems } = useCart();
     const { product, loading, error } = useProductDetail(id);
     const [quantity, setQuantity] = useState(1);
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     if (loading) {
         return (
@@ -45,16 +47,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         <span>Back</span>
                     </button>
                     <Link href="/" className="text-xl font-black tracking-tighter uppercase">Gravity.</Link>
-                    <div className="relative">
-                        <ShoppingBag size={22} />
+                    <button 
+                        onClick={() => setIsCartOpen(true)}
+                        className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
+                    >
+                        <ShoppingBag size={22} className="text-neutral-900" />
                         {totalItems > 0 && (
-                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                            <span className="absolute top-1 right-1 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
                                 {totalItems}
                             </span>
                         )}
-                    </div>
+                    </button>
                 </div>
             </nav>
+
+            <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
             <main className="max-w-7xl mx-auto px-6 pt-32 pb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">

@@ -4,6 +4,7 @@ import React from 'react';
 import { Product } from '@/domain/entities/Product';
 import { ShoppingCart, Eye } from 'lucide-react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 interface ProductCardProps {
     product: Product;
@@ -13,7 +14,10 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewDetails }) => {
     return (
-        <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-neutral-100">
+        <motion.div 
+            whileHover={{ y: -4 }}
+            className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-neutral-100"
+        >
             <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
                     src={product.imageUrl}
@@ -89,6 +93,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
                     </button>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

@@ -45,4 +45,17 @@ export class MockProductRepository implements ProductRepository {
         if (!product) return null;
         return ProductMapper.toDomain(product);
     }
+
+    async updateStock(productId: string, quantity: number): Promise<void> {
+        const product = MOCK_PRODUCTS.find(p => p._id === productId);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+        if (product.stock_count < quantity) {
+            throw new Error('Insufficient stock');
+        }
+        // Note: This updates the in-memory constant, which will reset on reload.
+        // For persistent updates, use LocalStorageProductRepository.
+        product.stock_count -= quantity;
+    }
 }

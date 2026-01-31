@@ -48,11 +48,11 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                     {/* Left: Shipping Form */}
                     <section>
-                        <h1 className="text-4xl font-black tracking-tighter mb-8 uppercase">Checkout</h1>
+                        <h1 className="text-4xl font-black tracking-tighter mb-8 uppercase text-neutral-900">Checkout</h1>
                         
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
-                                <label className="block text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">
+                                <label className="block text-xs font-black uppercase tracking-widest text-neutral-600 mb-2">
                                     Shipping Address
                                 </label>
                                 <input
@@ -61,11 +61,11 @@ export default function CheckoutPage() {
                                     placeholder="Shipping Address"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
-                                    className="w-full px-6 py-4 bg-white border border-neutral-200 rounded-2xl focus:border-black outline-none font-bold transition-colors"
+                                    className="w-full px-6 py-4 bg-white border border-neutral-200 rounded-2xl focus:border-black outline-none font-bold text-neutral-900 transition-colors placeholder:text-neutral-400"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">
+                                <label className="block text-xs font-black uppercase tracking-widest text-neutral-600 mb-2">
                                     Contact Number
                                 </label>
                                 <input
@@ -74,7 +74,7 @@ export default function CheckoutPage() {
                                     placeholder="Contact Number"
                                     value={contact}
                                     onChange={(e) => setContact(e.target.value)}
-                                    className="w-full px-6 py-4 bg-white border border-neutral-200 rounded-2xl focus:border-black outline-none font-bold transition-colors"
+                                    className="w-full px-6 py-4 bg-white border border-neutral-200 rounded-2xl focus:border-black outline-none font-bold text-neutral-900 transition-colors placeholder:text-neutral-400"
                                 />
                             </div>
 
@@ -92,37 +92,37 @@ export default function CheckoutPage() {
                         <div className="mt-12 grid grid-cols-3 gap-4">
                             <div className="flex flex-col items-center text-center p-4">
                                 <Truck size={24} className="mb-2 text-emerald-600" />
-                                <span className="text-[10px] font-black uppercase text-neutral-400">Fast Shipping</span>
+                                <span className="text-[10px] font-black uppercase text-neutral-500">Fast Shipping</span>
                             </div>
                             <div className="flex flex-col items-center text-center p-4">
                                 <ShieldCheck size={24} className="mb-2 text-emerald-600" />
-                                <span className="text-[10px] font-black uppercase text-neutral-400">Secure Payment</span>
+                                <span className="text-[10px] font-black uppercase text-neutral-500">Secure Payment</span>
                             </div>
                             <div className="flex flex-col items-center text-center p-4">
                                 <CreditCard size={24} className="mb-2 text-emerald-600" />
-                                <span className="text-[10px] font-black uppercase text-neutral-400">Mock PG</span>
+                                <span className="text-[10px] font-black uppercase text-neutral-500">Mock PG</span>
                             </div>
                         </div>
                     </section>
 
                     {/* Right: Summary */}
                     <aside className="bg-white border border-neutral-100 rounded-3xl p-8 h-fit shadow-sm">
-                        <h2 className="text-xl font-black mb-6 uppercase tracking-tight">Order Summary</h2>
+                        <h2 className="text-xl font-black mb-6 uppercase tracking-tight text-neutral-900">Order Summary</h2>
                         <div className="space-y-4 mb-8">
                             {cart.items.map((item) => (
                                 <div key={item.product.id} className="flex justify-between items-center text-sm">
                                     <div className="flex flex-col">
-                                        <span className="font-bold">{item.product.name}</span>
-                                        <span className="text-neutral-400">Qty: {item.quantity}</span>
+                                        <span className="font-bold text-neutral-900">{item.product.name}</span>
+                                        <span className="text-neutral-500 font-medium">Qty: {item.quantity}</span>
                                     </div>
-                                    <span className="font-black">₩{(item.product.price * item.quantity).toLocaleString()}</span>
+                                    <span className="font-black text-neutral-900">₩{(item.product.price * item.quantity).toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="pt-6 border-t border-neutral-100 flex justify-between items-end">
                             <div>
-                                <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Total Amount</p>
-                                <p className="text-3xl font-black">₩{cart.totalPrice.toLocaleString()}</p>
+                                <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Total Amount</p>
+                                <p className="text-3xl font-black text-neutral-900">₩{cart.totalPrice.toLocaleString()}</p>
                             </div>
                         </div>
                     </aside>

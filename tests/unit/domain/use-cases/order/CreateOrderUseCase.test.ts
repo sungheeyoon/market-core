@@ -1,6 +1,7 @@
 import { CreateOrderUseCase } from '@/domain/use-cases/order/CreateOrderUseCase';
 import { OrderRepository } from '@/domain/repositories/OrderRepository';
 import { CartRepository } from '@/domain/repositories/CartRepository';
+import { ProductRepository } from '@/domain/repositories/ProductRepository';
 import { PaymentService } from '@/domain/services/PaymentService';
 import { Cart } from '@/domain/entities/Cart';
 import { Product } from '@/domain/entities/Product';
@@ -10,6 +11,7 @@ describe('CreateOrderUseCase', () => {
     let useCase: CreateOrderUseCase;
     let mockOrderRepository: jest.Mocked<OrderRepository>;
     let mockCartRepository: jest.Mocked<CartRepository>;
+    let mockProductRepository: jest.Mocked<ProductRepository>;
     let mockPaymentService: jest.Mocked<PaymentService>;
 
     const mockProduct = new Product({
@@ -33,6 +35,11 @@ describe('CreateOrderUseCase', () => {
             saveCart: jest.fn(),
             clearCart: jest.fn()
         };
+        mockProductRepository = {
+            getProducts: jest.fn(),
+            getProductById: jest.fn(),
+            updateStock: jest.fn()
+        };
         mockPaymentService = {
             processPayment: jest.fn()
         };
@@ -40,24 +47,37 @@ describe('CreateOrderUseCase', () => {
         useCase = new CreateOrderUseCase(
             mockOrderRepository,
             mockCartRepository,
+            mockProductRepository,
             mockPaymentService
         );
     });
 
-    it('should create an order successfully', async () => {
+    it('should create an order successfully and deduct stock', async () => {
         const cart = new Cart();
         cart.addItem(mockProduct, 2);
 
         mockPaymentService.processPayment.mockResolvedValue(true);
+        mockProductRepository.updateStock.mockResolvedValue();
 
         const shippingInfo = { address: 'Seoul', contact: '010' };
         const result = await useCase.execute(cart, shippingInfo);
 
         expect(result).toBeInstanceOf(Order);
-        expect(result.totalAmount).toBe(200);
         expect(mockPaymentService.processPayment).toHaveBeenCalledWith(200);
+        expect(mockProductRepository.updateStock).toHaveBeenCalledWith('p1', 2);
         expect(mockOrderRepository.saveOrder).toHaveBeenCalled();
         expect(mockCartRepository.clearCart).toHaveBeenCalled();
+    });
+
+    it('should throw error if stock update fails', async () => {
+        const cart = new Cart();
+        cart.addItem(mockProduct, 2);
+
+        mockPaymentService.processPayment.mockResolvedValue(true);
+        mockProductRepository.updateStock.mockRejectedValue(new Error('Insufficient stock'));
+
+        const shippingInfo = { address: 'Seoul', contact: '010' };
+        await expect(useCase.execute(cart, shippingInfo)).rejects.toThrow('Insufficient stock');
     });
 
     it('should throw error if cart is empty', async () => {

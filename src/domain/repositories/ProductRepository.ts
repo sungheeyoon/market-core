@@ -10,4 +10,5 @@ export interface ProductFilter {
 export interface ProductRepository {
     getProducts(filter?: ProductFilter): Promise<Product[]>;
     getProductById(id: string): Promise<Product | null>;
+    updateStock(productId: string, quantity: number): Promise<void>;
 }

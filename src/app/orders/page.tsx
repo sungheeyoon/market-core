@@ -7,21 +7,24 @@ import { Order } from '@/domain/entities/Order';
 import { OrderList } from '@/presentation/components/OrderList';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/presentation/context/AuthContext';
 
 export default function OrdersPage() {
+    const { user } = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchOrders = async () => {
+            const userId = user ? user.id : 'guest-user';
             const repository = new LocalStorageOrderRepository();
             const useCase = new GetOrdersUseCase(repository);
-            const result = await useCase.execute('user-1'); // Hardcoded for MVP
+            const result = await useCase.execute(userId); 
             setOrders(result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
             setLoading(false);
         };
         fetchOrders();
-    }, []);
+    }, [user]);
 
     return (
         <div className="min-h-screen bg-[#fafafa] text-neutral-900 selection:bg-neutral-900 selection:text-white">

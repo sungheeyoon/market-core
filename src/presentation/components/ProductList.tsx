@@ -3,6 +3,7 @@
 import React from 'react';
 import { Product } from '@/domain/entities/Product';
 import { ProductCard } from './ProductCard';
+import { motion } from 'framer-motion';
 
 interface ProductListProps {
     products: Product[];
@@ -11,24 +12,21 @@ interface ProductListProps {
 }
 
 export const ProductList: React.FC<ProductListProps> = ({ products, onAddToCart, onViewDetails }) => {
-    if (products.length === 0) {
-        return (
-            <div className="flex flex-col items-center justify-center py-24 text-neutral-400">
-                <div className="text-6xl mb-4">📦</div>
-                <p className="text-lg">No products found.</p>
-            </div>
-        );
-    }
-
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {products.map((product) => (
-                <ProductCard
+            {products.map((product, index) => (
+                <motion.div
                     key={product.id}
-                    product={product}
-                    onAddToCart={onAddToCart}
-                    onViewDetails={onViewDetails}
-                />
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                >
+                    <ProductCard
+                        product={product}
+                        onAddToCart={onAddToCart}
+                        onViewDetails={onViewDetails}
+                    />
+                </motion.div>
             ))}
         </div>
     );

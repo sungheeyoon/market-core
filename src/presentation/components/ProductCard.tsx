@@ -45,9 +45,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
                     <span className="text-xs font-medium uppercase tracking-wider text-neutral-400">
                         {product.category}
                     </span>
-                    <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
-                        In Stock
-                    </span>
+                    <div className="flex gap-2">
+                        {product.isOnSale && (
+                            <span className="text-xs font-semibold text-white bg-rose-600 px-2 py-1 rounded">
+                                Sale
+                            </span>
+                        )}
+                        <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+                            In Stock
+                        </span>
+                    </div>
                 </div>
                 <h3 className="text-lg font-bold text-neutral-900 mb-1 line-clamp-1 group-hover:text-emerald-700 transition-colors">
                     {product.name}
@@ -56,9 +63,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
                     {product.description}
                 </p>
                 <div className="flex items-center justify-between">
-                    <span className="text-xl font-black text-neutral-900">
-                        ₩{product.price.toLocaleString()}
-                    </span>
+                    <div className="flex flex-col">
+                        {product.isOnSale ? (
+                            <>
+                                <span className="text-xl font-black text-rose-600">
+                                    ₩{product.discountPrice?.toLocaleString()}
+                                </span>
+                                <span className="text-xs font-bold text-neutral-400 line-through">
+                                    ₩{product.price.toLocaleString()}
+                                </span>
+                            </>
+                        ) : (
+                            <span className="text-xl font-black text-neutral-900">
+                                ₩{product.price.toLocaleString()}
+                            </span>
+                        )}
+                    </div>
                     <button
                         onClick={() => onAddToCart?.(product)}
                         className="text-sm font-bold text-neutral-900 underline underline-offset-4 hover:text-emerald-600 transition-colors"

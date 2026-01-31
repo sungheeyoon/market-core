@@ -1,9 +1,8 @@
 'use client';
 
-import React, { use, useEffect, useState } from 'react';
+import React, { use, useState } from 'react';
 import { useCart } from '@/presentation/context/CartContext';
-import { MockProductRepository } from '@/data/repositories/MockProductRepository';
-import { Product } from '@/domain/entities/Product';
+import { useProductDetail } from '@/presentation/hooks/useProductDetail';
 import { ArrowLeft, ShoppingBag, Star, Share2, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,19 +12,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const { id } = use(params);
     const router = useRouter();
     const { addItem, totalItems } = useCart();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
+    const { product, loading, error } = useProductDetail(id);
     const [quantity, setQuantity] = useState(1);
-
-    useEffect(() => {
-        const fetchProduct = async () => {
-            const repository = new MockProductRepository();
-            const result = await repository.getProductById(id);
-            setProduct(result);
-            setLoading(false);
-        };
-        fetchProduct();
-    }, [id]);
 
     if (loading) {
         return (
@@ -35,10 +23,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         );
     }
 
-    if (!product) {
+    if (error || !product) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa]">
-                <h1 className="text-2xl font-bold mb-4">Product not found</h1>
+                <h1 className="text-2xl font-bold mb-4">{error || 'Product not found'}</h1>
                 <Link href="/" className="text-emerald-600 font-bold underline">Return to Catalog</Link>
             </div>
         );

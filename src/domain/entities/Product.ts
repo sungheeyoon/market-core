@@ -6,6 +6,8 @@ export interface ProductProps {
     imageUrl: string;
     category: string;
     stock: number;
+    createdAt?: Date;
+    discountPrice?: number;
 }
 
 export class Product {
@@ -13,7 +15,10 @@ export class Product {
 
     constructor(props: ProductProps) {
         this.validate(props);
-        this.props = props;
+        this.props = {
+            ...props,
+            createdAt: props.createdAt || new Date()
+        };
     }
 
     private validate(props: ProductProps): void {
@@ -32,4 +37,7 @@ export class Product {
     get imageUrl(): string { return this.props.imageUrl; }
     get category(): string { return this.props.category; }
     get stock(): number { return this.props.stock; }
+    get createdAt(): Date { return this.props.createdAt!; }
+    get discountPrice(): number | undefined { return this.props.discountPrice; }
+    get isOnSale(): boolean { return !!this.props.discountPrice && this.props.discountPrice < this.props.price; }
 }

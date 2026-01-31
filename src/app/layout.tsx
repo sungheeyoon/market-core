@@ -18,6 +18,8 @@ export const metadata: Metadata = {
 };
 
 import { CartProvider } from '@/presentation/context/CartContext';
+import { Header } from '@/presentation/components/Header';
+import { Suspense } from 'react';
 
 export default function RootLayout({
   children,
@@ -30,6 +32,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CartProvider>
+          <Suspense fallback={<div className="h-20 bg-white" />}>
+            <Header />
+          </Suspense>
           {children}
         </CartProvider>
       </body>

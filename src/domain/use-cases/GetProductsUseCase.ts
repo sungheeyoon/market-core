@@ -1,10 +1,10 @@
-import { ProductRepository } from '../repositories/ProductRepository';
 import { Product } from '../entities/Product';
+import { ProductRepository, ProductFilter } from '../repositories/ProductRepository';
 
 export class GetProductsUseCase {
-    constructor(private productRepository: ProductRepository) { }
+    constructor(private productRepository: ProductRepository) {}
 
-    async execute(): Promise<Product[]> {
-        return this.productRepository.getProducts();
+    async execute(filter?: ProductFilter): Promise<Product[]> {
+        return this.productRepository.getProducts(filter);
     }
 }

@@ -1,60 +1,43 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Product } from '@/domain/entities/Product';
 import { useProductCatalog } from '@/presentation/hooks/useProductCatalog';
 import { ProductList } from '@/presentation/components/ProductList';
 import { useCart } from '@/presentation/context/CartContext';
-import { ShoppingBag, Search, Menu } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { CartDrawer } from '@/presentation/components/CartDrawer';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-export default function CatalogPage() {
+const CATEGORIES = ['All', '전자제품', '패션', '라이프스타일'];
+
+function CatalogContent() {
   const router = useRouter();
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const { products, loading, error } = useProductCatalog();
-  const { addItem, totalItems } = useCart();
+  const searchParams = useSearchParams();
+  const { products, loading, error, setFilter } = useProductCatalog();
+  const { addItem } = useCart();
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null) {
+      setFilter(prev => ({ ...prev, query: q }));
+    }
+  }, [searchParams, setFilter]);
 
   const handleViewDetails = (product: Product) => {
     router.push(`/products/${product.id}`);
   };
 
+  const handleCategorySelect = (category: string) => {
+    setActiveCategory(category);
+    setFilter(prev => ({ 
+      ...prev, 
+      category: category === 'All' ? undefined : category 
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-[#fafafa] text-neutral-900 selection:bg-neutral-900 selection:text-white">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <h1 className="text-2xl font-black tracking-tighter uppercase">Gravity.</h1>
-            <div className="hidden md:flex gap-6 text-sm font-bold tracking-tight text-neutral-500 uppercase">
-              <a href="#" className="hover:text-black transition-colors">Catalog</a>
-              <a href="#" className="hover:text-black transition-colors">New Arrivals</a>
-              <a href="#" className="hover:text-black transition-colors">Editorial</a>
-            </div>
-          </div>
-          <div className="flex items-center gap-5">
-            <button className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
-              <Search size={22} />
-            </button>
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="p-2 hover:bg-neutral-100 rounded-full transition-colors relative"
-            >
-              <ShoppingBag size={22} />
-              {totalItems > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full animate-in zoom-in duration-300">
-                  {totalItems}
-                </span>
-              )}
-            </button>
-            <button className="md:hidden p-2 hover:bg-neutral-100 rounded-full transition-colors">
-              <Menu size={22} />
-            </button>
-          </div>
-        </div>
-      </nav>
-
       <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Header section */}
         <section className="mb-16">
@@ -65,13 +48,20 @@ export default function CatalogPage() {
                 THE WINTER <br /> COLLECTION.
               </h2>
             </div>
-            <div className="flex gap-4 mb-4">
-              <button className="px-5 py-2.5 bg-neutral-900 text-white text-sm font-bold rounded-full hover:bg-neutral-800 transition-colors">
-                All Items
-              </button>
-              <button className="px-5 py-2.5 bg-white border border-neutral-200 text-sm font-bold rounded-full hover:border-black transition-colors">
-                Refine
-              </button>
+            <div className="flex gap-4 mb-4 flex-wrap">
+              {CATEGORIES.map(cat => (
+                <button 
+                  key={cat}
+                  onClick={() => handleCategorySelect(cat)}
+                  className={`px-5 py-2.5 text-sm font-bold rounded-full transition-colors ${
+                    activeCategory === cat 
+                      ? 'bg-neutral-900 text-white' 
+                      : 'bg-white border border-neutral-200 hover:border-black'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
         </section>
@@ -91,6 +81,20 @@ export default function CatalogPage() {
         ) : error ? (
           <div className="text-center py-20">
             <p className="text-red-500 font-bold">{error}</p>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-20 flex flex-col items-center">
+            <p className="text-2xl font-bold mb-4">No products found</p>
+            <p className="text-neutral-500">Try adjusting your search or filter to find what you're looking for.</p>
+            <button 
+              onClick={() => {
+                handleCategorySelect('All');
+                setFilter({});
+              }}
+              className="mt-8 px-6 py-3 bg-black text-white rounded-full font-bold hover:bg-emerald-600 transition-colors"
+            >
+              Clear Filters
+            </button>
           </div>
         ) : (
           <ProductList
@@ -117,9 +121,9 @@ export default function CatalogPage() {
           <div>
             <h4 className="font-black text-xs uppercase tracking-widest mb-6 text-neutral-400">Shop</h4>
             <ul className="space-y-4 text-sm font-bold">
-              <li><a href="#" className="hover:text-emerald-600 transition-colors">Catalog</a></li>
-              <li><a href="#" className="hover:text-emerald-600 transition-colors">New Arrivals</a></li>
-              <li><a href="#" className="hover:text-emerald-600 transition-colors">Sale</a></li>
+              <li><Link href="/" className="hover:text-emerald-600 transition-colors">Catalog</Link></li>
+              <li><Link href="/new-arrivals" className="hover:text-emerald-600 transition-colors">New Arrivals</Link></li>
+              <li><Link href="/sale" className="hover:text-emerald-600 transition-colors">Sale</Link></li>
             </ul>
           </div>
           <div>
@@ -132,11 +136,14 @@ export default function CatalogPage() {
           </div>
         </div>
       </footer>
-
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-      />
     </div>
+  );
+}
+
+export default function CatalogPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CatalogContent />
+    </Suspense>
   );
 }

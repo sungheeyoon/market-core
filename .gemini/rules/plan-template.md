@@ -15,6 +15,8 @@
 5. 📝 Document learnings in Notes section
 6. ➡️ Only then proceed to next phase
 
+⛔ **DO NOT skip quality gates or proceed with failing checks**
+
 ---
 
 ## 📋 Overview
@@ -326,7 +328,7 @@ describe/group: Feature or component name
 - [ ] **Test 3.1**: Write unit tests for [specific functionality]
   - File(s): `test/unit/[feature]/[component]_test.*`
   - Expected: Tests FAIL (red) because feature doesn't exist yet
-  - Details: Test 코딩:
+  - Details: Test cases covering:
     - Happy path scenarios
     - Edge cases
     - Error conditions

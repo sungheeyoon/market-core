@@ -44,7 +44,8 @@ Break feature into 3-7 phases where each phase:
 - **Coverage Target**: Specific percentage or checklist for this phase
 
 ### Step 3: Plan Document Creation
-Use plan-template.md to generate: `docs/plans/PLAN_<feature-name>.md`
+Use the template at `./.gemini/rules/plan-template.md` to generate the plan.
+The output file must be created at: `docs/plans/PLAN_<feature-name>.md`
 
 Include:
 - Overview and objectives
@@ -314,4 +315,4 @@ test 'component should call dependency':
 6. **Test Data**: What fixtures/factories are needed?
 
 ## Supporting Files Reference
-- [plan-template.md](plan-template.md) - Complete plan document template
+- [plan-template.md](./.gemini/rules/plan-template.md) - Complete plan document template

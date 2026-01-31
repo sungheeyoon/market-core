@@ -6,34 +6,49 @@ describe('GetProductsUseCase', () => {
     const mockProducts: Product[] = [
         new Product({
             id: '1',
-            name: 'Test Product 1',
+            name: 'Blue Shirt',
             price: 1000,
             description: 'Desc 1',
             imageUrl: '/img1.jpg',
-            category: 'Cat 1',
+            category: 'Clothing',
             stock: 5
         }),
         new Product({
             id: '2',
-            name: 'Test Product 2',
+            name: 'Red Cap',
             price: 2000,
             description: 'Desc 2',
             imageUrl: '/img2.jpg',
-            category: 'Cat 2',
+            category: 'Accessories',
             stock: 10
         })
     ];
 
     const mockProductRepository: ProductRepository = {
-        getProducts: jest.fn().mockResolvedValue(mockProducts),
+        getProducts: jest.fn(),
         getProductById: jest.fn()
     };
 
-    it('should return a list of products from the repository', async () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should return all products when no filter is provided', async () => {
+        (mockProductRepository.getProducts as jest.Mock).mockResolvedValue(mockProducts);
         const useCase = new GetProductsUseCase(mockProductRepository);
         const result = await useCase.execute();
 
         expect(result).toEqual(mockProducts);
-        expect(mockProductRepository.getProducts).toHaveBeenCalledTimes(1);
+        expect(mockProductRepository.getProducts).toHaveBeenCalledWith(undefined);
+    });
+
+    it('should pass filter options to repository', async () => {
+        (mockProductRepository.getProducts as jest.Mock).mockResolvedValue([]);
+        const useCase = new GetProductsUseCase(mockProductRepository);
+        const filter = { query: 'Blue', category: 'Clothing' };
+        
+        await useCase.execute(filter);
+
+        expect(mockProductRepository.getProducts).toHaveBeenCalledWith(filter);
     });
 });

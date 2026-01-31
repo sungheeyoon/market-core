@@ -39,6 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     const navLinks = [
         { name: 'Catalog', href: '/' },
         { name: 'New Arrivals', href: '/new-arrivals' },
+        { name: 'Editorial', href: '/editorial' },
         { name: 'Orders', href: '/orders' },
         { name: 'Sale', href: '/sale' },
     ];

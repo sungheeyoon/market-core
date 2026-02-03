@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { totalItems } = useCart();
-    const { user, login, logout } = useAuth();
+    const { user, logout } = useAuth();
     
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -35,10 +35,6 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         } else {
             onSearch?.(searchQuery);
         }
-    };
-
-    const handleLogin = async () => {
-        await login('user@example.com', 'password');
     };
 
     const navLinks = [

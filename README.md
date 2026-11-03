@@ -11,6 +11,8 @@
 - 토스페이먼츠 결제 요청과 서버 승인(`/api/payments/confirm`), 결제 실패 · 완료 화면
 - Supabase 로그인과 내 주문 목록
 
+상품은 목 데이터, 장바구니와 주문은 브라우저 localStorage 에 둡니다. 도메인 층의 저장소 인터페이스 뒤에 구현을 두어, 서버 저장소로 바꿀 때 화면과 유스케이스는 그대로 둘 수 있게 했습니다.
+
 ## 기술 구성
 
 Next.js (App Router) · React · TypeScript · Tailwind CSS · Supabase · Toss Payments · Jest · Playwright
